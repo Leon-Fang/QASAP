@@ -2,6 +2,9 @@
     width: 100%; 
     display: block; 
     max-width: 100%; 
+    margin-top: 2%;
+    margin-left: 1%;
+    margin-right: 5%;
     height: auto;
-    background-color: blue;
+    background-color: grey;
 }
