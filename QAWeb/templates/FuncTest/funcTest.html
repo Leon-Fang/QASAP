@@ -12,6 +12,9 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/fileinput.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/fileinput-rtl.min.css' %}" type="text/css">
+
     <style>
         html,
         body {
@@ -36,7 +39,15 @@
        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
         <ul class="nav flex-column bg-secondary" >
           <li class="nav-item  bg-dark">
-            <a class="nav-link text-muted" href="#">Runtime</a>
+            <a class="nav-link text-primary" href="#">Dashboard</a>
+            </br>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-warning" href="#">Deployment</a>
+            </br>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link text-warning" href="#">Runtime</a>
             </br>
           </li>
           <li class="nav-item">
@@ -44,34 +55,202 @@
             </br>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-muted" href="#">Debugger</a>
+            <a class="nav-link text-warning" href="#">Debugger</a>
             </br>
           </li>
-          <li class="nav-item">
-            <a class="nav-link text-muted" href="#">Deployment</a>
-            </br>
-          </li>
+          
         </ul>
       </div>
       <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 bg-dark">
-        <div>
-          <ul>
-            <li>
+            <div id="accordion">
+              <div class="card">
+                <div class="card-header">
+                  <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                    Description
+                  </a>
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                  <div class="card-body">
+                    #1 内容：
+                    </br>
+                    </br>
+                    </br>
+                    </br>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                  Checkpoints
+                </a>
+                </div>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    #2 内容：
 
-            </li>
-          
-          </ul>
-        </div>
+                    <div id="accordion2">
+                        <div class="card">
+                          <div class="card-header">
+                            <a class="card-link" data-toggle="collapse" href="#collapseOne1">
+                              Checkpoint1
+                            </a>
+                            <div class="float-right">
+                                <label class="radio-inline"><input type="radio" name="optradio"> Covered </label>
+                                <label class="radio-inline"><input type="radio" name="optradio"> Uncovered </label>
+                            </div>
+                          </div>
+                          <div id="collapseOne1" class="collapse show" data-parent="#accordion2">
+                            <div class="card-body">
+                              <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                  <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                                  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card">
+                          <div class="card-header">
+                            <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo1">
+                            Checkpoint2
+                          </a>
+                          </div>
+                          <div id="collapseTwo1" class="collapse" data-parent="#accordion2">
+                            <div class="card-body">
+                              <form>
+                                <div class="row">
+                                  <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                  <label for="testEv">Test evidences:</label>
+                                  <input type="file"
+                                    class="form-control" name="" id="testEv" aria-describedby="helpId" placeholder="">
+                                  <small id="helpId" class="form-text text-muted">Screenshots for test results</small>
+                                  </div>
+                                  <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                    <label for="comment"> comments:</label>
+                                    <textarea class="form-control" rows="5" id="comment"></textarea>
+                                  </div>
+                                </div>
+                                
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card">
+                          <div class="card-header">
+                            <a class="collapsed card-link" data-toggle="collapse" href="#collapse3">
+                            Checkpoint3
+                          </a>
+                          </div>
+                          <div id="collapse3" class="collapse" data-parent="#accordion2">
+                            <div class="card-body">
+                              <form id="form" action="upload/insert" method="post" enctype="multipart/form-data">
+                                  <div class="row form-group">
+                                      <label class="col-md-4">图片上传:</label>
+                                      <div class="col-sm-12">
+                                          <input id="input-id" name="file" multiple type="file" data-show-caption="true">
+                                      </div>
+                                  </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                    Test
+                  </a>
+                </div>
+                  <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                      #3 内容：
+                    </div>
+                  </div>
+             </div>
+       </div>
       </div>
      </div>
-      
-      
+      <img src={{image1}}>
+      <form method="post" enctype="multipart/form-data" action="/testing/activities/functional/uploal_action/" >
+          {% csrf_token %}
+          <input type="file" name="pic"><br/>
+          <input type="submit" value="上传"><br/>
+      </form>
 
 
     <script src="{% static 'js/jquery.min.js' %}" ></script>
     <script src="{% static 'js/popper.min.js' %}" ></script>
     <script src="{% static 'js/bootstrap.min.js' %}" ></script>
 
+    <script src="{% static 'js/fileinput.min.js' %}" ></script>
+    <script src="{% static 'js/popper.min.js' %}" ></script>
+    <script src="{% static 'js/bootstrap.min.js' %}" ></script>
+    
+    <script type="text/javascript">
+      function initFileInput(ctrlName) {
+          var control = $('#' + ctrlName);
+          control.fileinput({
+              //language: 'zh', //设置语言
+              uploadUrl: "/Users/i536270/Documents/learning/QualityApp/test", //上传的地址
+              allowedFileExtensions: ['jpg', 'gif', 'png','mp4','moc'],//接收的文件后缀
+              //uploadExtraData:{"id": 1, "fileName":'123.mp3'},
+              uploadAsync: false, //默认异步上传
+              showUpload: true, //是否显示上传按钮
+              showRemove : true, //显示移除按钮
+              showPreview : true, //是否显示预览
+              showCaption: true,//是否显示标题
+              browseClass: "btn btn-primary", //按钮样式
+              dropZoneEnabled: true,//是否显示拖拽区域
+              minImageWidth: 50, //图片的最小宽度
+              minImageHeight: 50,//图片的最小高度
+              maxImageWidth: 1000,//图片的最大宽度
+              maxImageHeight: 1000,//图片的最大高度
+              maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+              minFileCount: 0,
+              maxFileCount: 10, //表示允许同时上传的最大文件个数
+              enctype: 'multipart/form-data',
+              validateInitialCount:true,
+              previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+              msgFilesTooMany: "please choose upload file count({n}) max: {m}！",
+              window:true,
+              uploadExtraData: function(previewId, index) {   //额外参数的关键点,没有额外参数可以注释掉
+                  data = {
+                      uId:uId
+                  }
+                  return data;
+              }
+
+          }).on('filepreupload', function(event, data, previewId, index) {     //一个上传中处理函数
+              var form = data.form, files = data.files, extra = data.extra,
+                  response = data.response, reader = data.reader;
+              console.log('uploading...');
+          }).on("fileuploaded", function (event, data, previewId, index) {    //一个文件完成处理函数
+            //后端下载数据成功后返回前端文件路径，前端解析路径进行文件回显（图片可使用img标签，视频可以使用视频播放插件，这里演示的是图片回显）
+              var htmlStr = ''
+              htmlStr +=  '<img class="fileUrls" src="'+data.response.data+'" alt="">';
+              $(".pic_display").append(htmlStr);
+              console.log('upload sucessfully+++++！'+data);
+
+            }).on('fileerror', function(event, data, msg) {  //一个文件上传失败处理函数
+                console.log('upload failed！'+data.id);
+
+
+            })
+        }
+        
+        $(function () {
+            initFileInput("input-id");
+        })
+    </script>
   </body>
 
 
