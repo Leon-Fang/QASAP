@@ -1,1 +1,8 @@
-1.develop FuncTestPage frontend Page.
+uiauto:
+1.  定制后台，
+2.  后台输入数据，存入数据库，前台显示scenario,
+3.  写uiauto scripts， 后台入库,
+4.  前台调用 run auto test,
+5.  测试结果入库，
+6.  测试结果前台显示，
+7.  前台查询并显示 历史数据/report

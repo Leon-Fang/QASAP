@@ -1,0 +1,39 @@
+1.
+
+django中的模板并不能实现自动换行，遇到/n的话不会自动换行，毕竟/n是python里面的换行符，html怎么可能认识呢？
+
+那如何实现在模板中换行呢
+
+        <p>
+            {{ article.content|linebreaksbr }}
+        </p>
+使用 linebreaks 过滤器，可以将\n换行
+
+缺点是不能处理多个连续空格。可以自己写一个 filter 把所有的空格转为\n
+
+
+2.
+Django获取checkbox勾选框的值（转载）
+<form action="" method="POST">
+    <input type="checkbox" value="1" name="check_box_list"/>1
+    <input type="checkbox" value="2" name="check_box_list"/>2
+    <input type="checkbox" value="3" name="check_box_list"/>3
+    <input type="checkbox" value="4" name="check_box_list"/>4
+    <input type="submit" value="提交">
+</form>
+ 
+
+#通过request.REQUEST.getlist取到list形式的提交结果
+def getresult(request):
+    check_box_list = request.REQUEST.getlist("check_box_list")
+
+
+3.
+# 一对多
+    # cid = models.ForeignKey(to="Class",to_field="id",related_name="student")
+    cid = models.ForeignKey(to="Class", to_field="id")
+
+    # 一对一
+    detail = models.OneToOneField("StudentDetail", to_field="id")
+    # 等同于如下的代码
+    # detail = models.ForeignKey(to="StudentDetail",to_field="id",unique=True)

@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    {% load static %}
+
+    <title> 
+    </title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/fileinput.min.css' %}" type="text/css">
+
+    <style>
+        html,
+        body {
+    
+          height: 100%;
+          background-color: black;
+          margin: 0;
+          padding: 0;
+        }
+    
+        .nav-item{
+          margin: 3%;
+          padding: 3%;
+        }
+    </style>
+  </head>
+
+
+  <body>
+     {{hi}}
+    <div class="row" style="height:100%">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <ul class="nav flex-column bg-secondary" >
+            <li class="nav-item  bg-dark">
+              <a class="nav-link text-primary" href="#">Dashboard</a>
+              </br>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-warning" href="#">Scenarios</a>
+              </br>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link text-warning" href="#">Results</a>
+              </br>
+            </li>
+          </ul>
+        </div>
+
+       <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 bg-dark">
+            <div id="accordion">
+              <div class="card">
+                <div class="card-header">
+                  <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                    Scenario 1 </br><small>Terminate running Process Instance in monitor ui main page.</small>
+                  </a>
+                  <div class="float-right">
+                    <div class="form-check form-check-inline">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="">Include 
+                      </label>
+                    </div>
+                    <a name="" id="" class="btn btn-primary" href="#" role="button">
+                       <span> Run</span>
+                    </a>
+                    </br>
+                  </div>  
+                </div>
+                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                  <div class="card-body">
+                    <p>
+                    <mark>Steps:</mark></br>
+                      1. Design a process --make sure it can keep running for a loog time.</br>
+                      2. Run the pp from sfd side.</br>
+                      3. Goto montior UI and find the process instance.</br>
+                      4. Check there exist a terminate button beside the instance in the table.</br>
+                      5. Click the button and wait a while.</br>
+                      6. Check the process instance: status chang to terminated.</br>
+                      7. Goto instance detail page: the status is terminated and step shows terminated too.</br>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="card-link" data-toggle="collapse" href="#collapseTwo">
+                    Scenario 2 </br><small>Terminate running Process Instance in instance detail page.</small>
+                  </a>
+                </div>
+                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                  <div class="card-body">
+                    Steps:</br>
+                      1. Design a process --make sure it can keep running for a loog time.</br>
+                      2. Run the pp from sfd side.</br>
+                      3. Goto montior UI and find the process instance.</br>
+                      .</br>
+                      .</br>
+                      .</br>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                    Scenario 2 </br><small>Run DME services</small>
+                  </a>
+                </div>
+                  <div id="collapseThree" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                      Content:
+                    </div>
+                  </div>
+              </div>
+         </div>
+      </div>
+    </div>
+      <div class="card-footer text-muted">
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+              Automation Execution
+            </a>
+          </div>
+        </div>
+      </div>
+
+    
+    <script src="{% static 'js/jquery.min.js' %}" ></script>
+    <script src="{% static 'js/popper.min.js' %}" ></script>
+    <script src="{% static 'js/bootstrap.min.js' %}" ></script>
+  </body>
+
+
+</html>
