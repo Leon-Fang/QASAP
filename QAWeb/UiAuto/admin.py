@@ -2,4 +2,11 @@ from django.contrib import admin
 from UiAuto.models import UIAutoScenario,UIAutoCode
 
 # Register your models here.
-admin.site.register(UIAutoScenario,UIAutoCode)
+class UIAutoSAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+
+class UIAutoCAdmin(admin.ModelAdmin):
+    actions_on_bottom = True
+
+admin.site.register(UIAutoScenario,UIAutoSAdmin)
+admin.site.register(UIAutoCode,UIAutoCAdmin)
