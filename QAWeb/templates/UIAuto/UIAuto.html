@@ -45,15 +45,44 @@
               <a class="nav-link text-warning" href="#">Scenarios</a>
               </br>
             </li>
-            <li class="nav-item ">
-              <a class="nav-link text-warning" href="#">Results</a>
-              </br>
-            </li>
           </ul>
         </div>
 
        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 bg-dark">
             <div id="accordion">
+
+              {% for sce in Scenarios %}
+              
+                <div class="card">
+                  <div class="card-header">
+                    <a class="card-link" data-toggle="collapse" href="#collapse{{ forloop.counter }}">
+                      Scenario {{ forloop.counter }} </br>
+                      <small>{{ sce.desc|truncatewords:"50"}}</small>
+                    </a>
+                    <div class="float-right">
+                      <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                          <input type="checkbox" class="form-check-input" value="">Include 
+                        </label>
+                      </div>
+                      <a name="" id="" class="btn btn-primary" href="#" role="button">
+                        <span> Run</span>
+                      </a>
+                      </br>
+                    </div>  
+                  </div>
+                  <div id="collapse{{ forloop.counter }}" class="collapse show" data-parent="#accordion">
+                    <div class="card-body">
+                      <p>
+                      <mark>Steps:</mark></br>
+                        {{ sce.steps }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+              {% endfor %}
+
               <div class="card">
                 <div class="card-header">
                   <a class="card-link" data-toggle="collapse" href="#collapseOne">

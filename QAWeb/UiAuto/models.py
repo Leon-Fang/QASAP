@@ -11,7 +11,11 @@ class UIAutoScenario(models.Model):
     steps = models.TextField('Scenario steps')
     createDate=models.DateTimeField(auto_now_add=True)
     lastUdpateDate=models.DateTimeField(auto_now=True)
-
+    
+    def __str__(self):
+        return self.desc
+    
+    
     class Meta:
         db_table='UIAutoScenario'
         ordering=['scenarioId']

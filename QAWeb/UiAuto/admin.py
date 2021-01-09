@@ -4,7 +4,7 @@ from UiAuto.models import UIAutoScenario,UIAutoCode
 # Register your models here.
 class UIAutoSAdmin(admin.ModelAdmin):
     actions_on_bottom = True
-
+    fields =('scenarioId','desc','steps')
 class UIAutoCAdmin(admin.ModelAdmin):
     actions_on_bottom = True
 
