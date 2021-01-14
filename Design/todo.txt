@@ -1,6 +1,8 @@
 uiauto:
 1.  定制后台，
-2.  后台输入数据，存入数据库，前台显示scenario,
+2.  后台输入scenario数据，存入数据库，前台显示, --done
+    前端过滤isAutomated 的scenarios来显示。-done
+    前端自动换行
 3.  写uiauto scripts， 后台入库,
 4.  前台调用 run auto test,
 5.  测试结果入库，

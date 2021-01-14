@@ -3,10 +3,16 @@ from UiAuto.models import UIAutoScenario,UIAutoCode
 
 # Register your models here.
 class UIAutoSAdmin(admin.ModelAdmin):
-    actions_on_bottom = True
-    fields =('scenarioId','desc','steps')
+    fields =('scenarioId','desc','steps','isAutomated')
+    list_display=('desc','createDate','lastUdpateDate','isAutomated')
+    actions = ['make_automated']  
+    
+    def make_automated(self, request, queryset):
+        queryset.update(isAutomated=True)
+    make_automated.short_description = "Mark selected stories as automated"
+
 class UIAutoCAdmin(admin.ModelAdmin):
-    actions_on_bottom = True
+    list_display=('sautoId','createDate','lastUdpateDate')
 
 admin.site.register(UIAutoScenario,UIAutoSAdmin)
 admin.site.register(UIAutoCode,UIAutoCAdmin)
