@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Home',
     'FuncTest',
     'UiAuto',
+    'ApiAuto',
 ]
 
 MIDDLEWARE = [
