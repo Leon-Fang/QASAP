@@ -7,7 +7,6 @@ def index(request):
     Sces = models.ApiAutoScenario.objects.all()
 
     context = {}
-    context['gg'] = 'ss'
 
     context['Scenarios'] = Sces
     return render(request,'ApiAuto/ApiAuto.html',context)
