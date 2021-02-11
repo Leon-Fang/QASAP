@@ -43,7 +43,6 @@
 
 
   <body>
-  {{test}}
     <nav class="navbar navbar-expand-sm navbar-light bg-dark">
       <a class="navbar-brand" href="#">Navbar</a>
       <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
@@ -103,22 +102,22 @@
               
                 <div class="card">
                   <div class="card-header">
+                    <div class="form-check form-check-inline">
+                      <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" value="">
+                      </label>
+                    </div>
                     <a class="card-link" data-toggle="collapse" href="#collapse{{ forloop.counter }}">
-                      Scenario {{ forloop.counter }} </br>
+                      Scenario {{ forloop.counter }}:
                       <small>{{ sce.desc|truncatewords:"50"}}</small>
                     </a>
 
                     {% if sce.isAutomated %}
                         <div class="float-right">
-                          <div class="form-check form-check-inline">
-                            <label class="form-check-label">
-                              <input type="checkbox" class="form-check-input" value="">Include 
-                            </label>
-                          </div>
-                          <a name="" id="" class="btn btn-primary" href="#" role="button">
-                            <span> Run</span>
-                          </a>
-                          </br>
+                          <form action="/testing/activities/ApiAuto/runapi/{{sce.scenarioId}}" method="post">
+                            {% csrf_token %}
+                            <input class="bg-primary" type="submit" value="Run">
+                          </form>
                         </div>  
                     {% else %}
                        <div class="float-right">
@@ -168,14 +167,28 @@
       <div class="card-footer text-muted">
         <div class="card">
           <div class="card-header">
+          {% block exeAuto %}
+            
+            <form>
+            
+            </form>
+
             <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
               Automation Execution
             </a>
+          {% endblock exeAuto %}
+            
           </div>
         </div>
       </div>
 
-    
+      {% block testRes %}
+      <div class="bg-primary">
+        {{test}}
+      </div>
+      {% endblock testRes %}
+      
+
     <script src="{% static 'js/jquery.min.js' %}" ></script>
     <script src="{% static 'js/popper.min.js' %}" ></script>
     <script src="{% static 'js/bootstrap.min.js' %}" ></script>

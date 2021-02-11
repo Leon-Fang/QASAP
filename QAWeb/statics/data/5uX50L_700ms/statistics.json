@@ -1,0 +1,50 @@
+{
+  "getAccToken" : {
+    "transaction" : "getAccToken",
+    "sampleCount" : 1,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 17382.0,
+    "medianResTime" : 17382.0,
+    "minResTime" : 17382.0,
+    "maxResTime" : 17382.0,
+    "pct1ResTime" : 17382.0,
+    "pct2ResTime" : 17382.0,
+    "pct3ResTime" : 17382.0,
+    "throughput" : 0.057530778966747215,
+    "receivedKBytesPerSec" : 0.6057024687895524,
+    "sentKBytesPerSec" : 0.0
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 251,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 809.4103585657368,
+    "medianResTime" : 717.0,
+    "minResTime" : 619.0,
+    "maxResTime" : 17382.0,
+    "pct1ResTime" : 802.2,
+    "pct2ResTime" : 918.9999999999993,
+    "pct3ResTime" : 1511.44,
+    "throughput" : 4.118129614438064,
+    "receivedKBytesPerSec" : 3.465330829573421,
+    "sentKBytesPerSec" : 44.74643021944216
+  },
+  "runProcess_Serial5MockService" : {
+    "transaction" : "runProcess_Serial5MockService",
+    "sampleCount" : 250,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 743.1199999999998,
+    "medianResTime" : 717.0,
+    "minResTime" : 619.0,
+    "maxResTime" : 1513.0,
+    "pct1ResTime" : 794.8,
+    "pct2ResTime" : 904.8,
+    "pct3ResTime" : 1485.5200000000004,
+    "throughput" : 6.344533549893412,
+    "receivedKBytesPerSec" : 5.092975173840219,
+    "sentKBytesPerSec" : 69.21365652915946
+  }
+}

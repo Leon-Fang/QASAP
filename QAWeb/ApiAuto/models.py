@@ -28,6 +28,10 @@ class ApiAutoCode(models.Model):
     sautoId = models.ForeignKey(ApiAutoScenario,to_field='scenarioId',on_delete=models.CASCADE,default=1)
     author=models.CharField('automation code author',max_length=20)
     desc=models.CharField('automation code description',max_length=120)
+    ApiInput=models.TextField(default="input")
+    ApiParam=models.TextField(default="para")
+    ApiMethod=models.TextField(default="get")
+    expectResult=models.TextField(default="{}")
     createDate=models.DateTimeField(auto_now_add=True)
     lastUdpateDate=models.DateTimeField(auto_now=True)
 

@@ -1,4 +1,19 @@
 {% extends 'ActivityBasic.html' %}
+
 {% block title %}
    Web UI Automation   
 {% endblock title %}
+
+{% block exeAuto %}
+   <form action="/testing/activities/ApiAuto/runapi/" method="post">
+        {% csrf_token %}
+        <input type="text" name="q">
+        <input type="submit" value="Automation Execution">
+    </form>
+{% endblock exeAuto %}
+
+{% block testRes %}
+      <div class="bg-primary">
+        {{test}}
+      </div>
+{% endblock testRes %}

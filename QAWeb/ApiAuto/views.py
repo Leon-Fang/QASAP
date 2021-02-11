@@ -1,6 +1,8 @@
 from . import models
 from django.shortcuts import render,HttpResponse
 import requests
+from UiAuto.views import webOpt
+import json
 
 # Create your views here.
 
@@ -11,34 +13,54 @@ def index(request):
     return render(request,'ApiAuto/ApiAuto.html',context)
 
 def runApiAutoTest(request):
-    acctoken = 'eyJhbGciOiJSUzI1NiIsImprdSI6Imh0dHBzOi8vZG1jaW50MS5hdXRoZW50aWNhdGlvbi5zYXAuaGFuYS5vbmRlbWFuZC5jb20vdG9rZW5fa2V5cyIsImtpZCI6ImtleS1pZC0xIiwidHlwIjoiSldUIn0.eyJqdGkiOiJhYzNlMGY1ODliMDY0ODg4YTI0MjY1NWUxYjMxOWYxYyIsImV4dF9hdHRyIjp7ImVuaGFuY2VyIjoiWFNVQUEiLCJzdWJhY2NvdW50aWQiOiI3YjMyMjRiMC02MzEyLTQwYmQtYjNmYi1mODc4MTJhMjdkMTkiLCJ6ZG4iOiJkbWNpbnQxIn0sInhzLnN5c3RlbS5hdHRyaWJ1dGVzIjp7InhzLnNhbWwuZ3JvdXBzIjpbIkRNMV9NYW51ZmFjdHVyaW5nX0FkbWluIiwiQXV0b21hdGlvbl9FbmdpbmVlciIsIkRNQ19JTlRfQUxMIl0sInhzLnJvbGVjb2xsZWN0aW9ucyI6WyJNYW51ZmFjdHVyaW5nX0FkbWluIiwiQXV0b21hdGlvbkVuZ2luZWVyIiwiRE1DX0lOVF9BTEwiXX0sImdpdmVuX25hbWUiOiJQRS5UZXNldGVyMSIsInhzLnVzZXIuYXR0cmlidXRlcyI6e30sImZhbWlseV9uYW1lIjoic2FwLmNvbSIsInN1YiI6IjU4YTc1OTQwLWEwODYtNDNhYS1hNmFmLWIwYmJmNzExMjUyYyIsInNjb3BlIjpbImRtYy1pbnQhdDM3MTUubW90LnIiLCJkbWMtaW50IXQzNzE1LnByaS5vcmciLCJkbWMtaW50IXQzNzE1Lm1vcC5yIiwiZG1jLWludCF0MzcxNS5jbXMuciIsImRtYy1pbnQhdDM3MTUubHNwLnIiLCJkbWMtaW50IXQzNzE1LmNtcy51IiwiZG1jLWludCF0MzcxNS5zci5yIiwiZG1jLWludCF0MzcxNS5zci53IiwiZG1jLWludCF0MzcxNS5jci5jIiwiZG1jLWludCF0MzcxNS5lc2MubSIsImRtYy1pbnQhdDM3MTUua3BpLmN1c3QubSIsImRtYy1pbnQhdDM3MTUuY3IuZCIsImRtYy1pbnQhdDM3MTUuY21zLmQiLCJkbWMtaW50IXQzNzE1LnNwLmRtZS5tIiwiZG1jLWludCF0MzcxNS5QTUEubSIsImRtYy1pbnQhdDM3MTUuZXNjLmUiLCJkbWMtaW50IXQzNzE1LmtwaS5jdXN0LnIiLCJkbWMtaW50IXQzNzE1LmVzYy5hIiwiZG1jLWludCF0MzcxNS5wcm9kdWN0aW9uLnJldCIsImRtYy1pbnQhdDM3MTUucGUuciIsImRtYy1pbnQhdDM3MTUuY3IuciIsImRtYy1pbnQhdDM3MTUuY21zLm1lLnIiLCJkbWMtaW50IXQzNzE1LkNvbnN1bWVyIiwiZG1jLWludCF0MzcxNS5jci51Iiwib3BlbmlkIiwiZG1jLWludCF0MzcxNS5hY3QucGEiLCJkbWMtaW50IXQzNzE1LlByb3ZpZGVyIiwiZG1jLWludCF0MzcxNS5pbnQuZXgiLCJkbWMtaW50IXQzNzE1LmVzYy5yIiwiZG1jLWludCF0MzcxNS50cmd0Lmdsb2JhbC5yIiwiZG1jLWludCF0MzcxNS50cmd0Lmdsb2JhbC5tIiwiZG1jLWludCF0MzcxNS5hY3QucHAiLCJkbWMtaW50IXQzNzE1LmFjdC5yIiwiZG1jLWludCF0MzcxNS5QTS5tIiwieHNfYXV0aG9yaXphdGlvbi5yZWFkIiwiZG1jLWludCF0MzcxNS5kYy5yIiwiZG1jLWludCF0MzcxNS5kYy5tIiwiZG1jLWludCF0MzcxNS5QTS5yIiwiZG1jLWludCF0MzcxNS5tb3UudyIsImRtYy1pbnQhdDM3MTUucHJpLmV4dC5hbGwiLCJkbWMtaW50IXQzNzE1LnBhLnIiLCJkbWMtaW50IXQzNzE1LndzLnIiLCJkbWMtaW50IXQzNzE1LkZpQUwuciIsImRtYy1pbnQhdDM3MTUud3MubSIsImRtYy1pbnQhdDM3MTUubW9hLnciLCJkbWMtaW50IXQzNzE1LmRvY3VtZW50Lm0iLCJkbWMtaW50IXQzNzE1LnRyZ3QucGxhbnQubSIsImRtYy1pbnQhdDM3MTUubW9hLnIiLCJkbWMtaW50IXQzNzE1LmludC5tIiwiZG1jLWludCF0MzcxNS5laC5yIiwiZG1jLWludCF0MzcxNS5laC5tIiwiZG1jLWludCF0MzcxNS5maWxlLmUiLCJkbWMtaW50IXQzNzE1LmRvY3VtZW50LnIiLCJ4c191c2VyLnJlYWQiLCJkbWMtc2VydmljZXMtaW50IWIzNzE1LmFtLmkiLCJkbWMtaW50IXQzNzE1LmthLnIiLCJkbWMtaW50IXQzNzE1LmhvbGQuZXgiLCJkbWMtaW50IXQzNzE1LkFMQy5tIiwiZG1jLWludCF0MzcxNS5wbGFudC5tIiwiZG1jLWludCF0MzcxNS5waC5yIiwiZG1jLWludCF0MzcxNS5tZWFzdXJlLnIiLCJkbWMtaW50IXQzNzE1LkFMQy5yIiwiZG1jLWludCF0MzcxNS5wbGFudC5yIiwiZG1jLWludCF0MzcxNS5wa2cuZXgiLCJkbWMtaW50IXQzNzE1LnRyZ3QucGxhbnQuciIsImRtYy1pbnQhdDM3MTUuY29uZi5tIiwiZG1jLWludCF0MzcxNS5xaV9tIiwiZG1jLWludCF0MzcxNS5GaUFMX1MuciIsImRtYy1pbnQhdDM3MTUucGVycy5tIiwiZG1jLWludCF0MzcxNS5GaUFMX1MubSIsImRtYy1pbnQhdDM3MTUucGxhbnQuYSIsImRtYy1pbnQhdDM3MTUuUE1SLnIiLCJkbWMtaW50IXQzNzE1LnBoLm0iLCJkbWMtaW50IXQzNzE1LnNwLm0iLCJkbWMtaW50IXQzNzE1LmhvbGQuciIsImRtYy1pbnQhdDM3MTUuZGVtYW5kLnBsIiwiZG1jLWludCF0MzcxNS5BRFMuciIsImRtYy1pbnQhdDM3MTUuQURTLm0iLCJkbWMtaW50IXQzNzE1Lm9yZy5hZG0iLCJkbWMtaW50IXQzNzE1LnJldC5tIiwiZG1jLWludCF0MzcxNS5wdWIuZXh0LmFsbCIsImRtYy1pbnQhdDM3MTUuc3AuciIsImRtYy1pbnQhdDM3MTUuaG9sZC5tIiwiZG1jLWludCF0MzcxNS5tb2IudyIsImRtYy1pbnQhdDM3MTUubW9iLnIiLCJkbWMtaW50IXQzNzE1LnFpX3IiLCJkbWMtaW50IXQzNzE1LmFtLmkiLCJkbWMtaW50IXQzNzE1LnBlLmV4IiwiZG1jLWludCF0MzcxNS5jbGFzc2lmaWNhdGlvbi5tIiwiZG1jLWludCF0MzcxNS5mbHAuYy5wdWJfYWRtIiwiZG1jLWludCF0MzcxNS5hc2IucnB0LnIiLCJkbWMtaW50IXQzNzE1LmNsYXNzaWZpY2F0aW9uLnIiLCJkbWMtaW50IXQzNzE1LnRvcGljLnIiLCJkbWMtaW50IXQzNzE1LnBzLm0iLCJkbWMtaW50IXQzNzE1LmFtLm0iLCJkbWMtaW50IXQzNzE1LmQiLCJkbWMtaW50IXQzNzE1Lm1vLmFjIiwiZG1jLWludCF0MzcxNS5jIiwiZG1jLWludCF0MzcxNS5pbmdlc3QubSIsImRtYy1pbnQhdDM3MTUuYW0uciIsImRtYy1pbnQhdDM3MTUudG9waWMubSIsImRtYy1pbnQhdDM3MTUucHMuciIsInVhYS51c2VyIiwiZG1jLWludCF0MzcxNS5kcHAubSIsImRtYy1pbnQhdDM3MTUudSIsImRtYy1pbnQhdDM3MTUuciIsImRtYy1pbnQhdDM3MTUucHJvZHNjaGVkLm0iLCJkbWMtaW50IXQzNzE1LnNwZy5tIiwiZG1jLWludCF0MzcxNS5wcm9kdWN0LnIiLCJkbWMtaW50IXQzNzE1LnNwZy5yIiwiZG1jLWludCF0MzcxNS5QTVQubSIsImRtYy1pbnQhdDM3MTUucHJvZHVjdC5tIiwiZG1jLWludCF0MzcxNS5hY3QudyIsImRtYy1pbnQhdDM3MTUubnVtYmVyaW5nLm0iLCJkbWMtaW50IXQzNzE1LmVodC5tIiwiZG1jLWludCF0MzcxNS5laHQuciIsImRtYy1pbnQhdDM3MTUubnVtYmVyaW5nLnIiLCJkbWMtaW50IXQzNzE1LmdhLnIiLCJkbWMtaW50IXQzNzE1LndpLnIiLCJkbWMtaW50IXQzNzE1LndpLm0iLCJkbWMtaW50IXQzNzE1LmF1dG9tYXRpb24uciIsImRtYy1pbnQhdDM3MTUucGUuYWxsIiwiZG1jLWludCF0MzcxNS5hbGVydC5yIiwiZG1jLWludCF0MzcxNS5yZXAuc2VsZiIsImRtYy1pbnQhdDM3MTUub2VlLnIiLCJkbWMtaW50IXQzNzE1LmtwaS5tIiwiZG1jLWludCF0MzcxNS5mbHAuYy5wdWJfdXNyIiwiZG1jLWludCF0MzcxNS5rcGkuciIsImRtYy1pbnQhdDM3MTUub3JnLnVzciIsImRtYy1pbnQhdDM3MTUuZGVtYW5kLmV4IiwiZG1jLWludCF0MzcxNS5wcm9kdWN0aW9uLmV4IiwiZG1jLWludCF0MzcxNS5tb3QudyIsImRtYy1pbnQhdDM3MTUuZGVtYW5kLm0iLCJkbWMtaW50IXQzNzE1LmF1dG9tYXRpb24ubSIsInByb3Zpc2lvbmluZy1kbWMtc2FwLWludCF0MzcxNS50X3IiLCJkbWMtaW50IXQzNzE1LmRlbWFuZC5yIiwiZG1jLWludCF0MzcxNS5tb3AudyJdLCJjbGllbnRfaWQiOiJzYi1leGVjdXRpb24tZG1jLXNhcC1pbnQhdDM3MTUiLCJjaWQiOiJzYi1leGVjdXRpb24tZG1jLXNhcC1pbnQhdDM3MTUiLCJhenAiOiJzYi1leGVjdXRpb24tZG1jLXNhcC1pbnQhdDM3MTUiLCJncmFudF90eXBlIjoidXJuOmlldGY6cGFyYW1zOm9hdXRoOmdyYW50LXR5cGU6c2FtbDItYmVhcmVyIiwidXNlcl9pZCI6IjU4YTc1OTQwLWEwODYtNDNhYS1hNmFmLWIwYmJmNzExMjUyYyIsIm9yaWdpbiI6InhzdWFhLW1vbml0b3JpbmctaWRwIiwidXNlcl9uYW1lIjoiUEUuVGVzZXRlcjFAc2FwLmNvbSIsImVtYWlsIjoiUEUuVGVzZXRlcjFAc2FwLmNvbSIsInJldl9zaWciOiJmNTM3OTkxOSIsImlhdCI6MTYxMTAyNDc2MywiZXhwIjoxNjExMDY3OTYzLCJpc3MiOiJodHRwOi8vZG1jaW50MS5sb2NhbGhvc3Q6ODA4MC91YWEvb2F1dGgvdG9rZW4iLCJ6aWQiOiI3YjMyMjRiMC02MzEyLTQwYmQtYjNmYi1mODc4MTJhMjdkMTkiLCJhdWQiOlsiZG1jLWludCF0MzcxNS50cmd0LnBsYW50IiwiZG1jLWludCF0MzcxNS5udW1iZXJpbmciLCJkbWMtaW50IXQzNzE1Lm1lYXN1cmUiLCJkbWMtaW50IXQzNzE1IiwiZG1jLWludCF0MzcxNS5jbXMubWUiLCJkbWMtaW50IXQzNzE1LmRvY3VtZW50IiwiZG1jLWludCF0MzcxNS5jb25mIiwiZG1jLWludCF0MzcxNS5vZWUiLCJ4c191c2VyIiwiZG1jLWludCF0MzcxNS5hdXRvbWF0aW9uIiwiZG1jLWludCF0MzcxNS5hbGVydCIsImRtYy1pbnQhdDM3MTUuRmlBTF9TIiwiZG1jLWludCF0MzcxNS5hbSIsImRtYy1pbnQhdDM3MTUuY21zIiwiZG1jLWludCF0MzcxNS5sc3AiLCJkbWMtc2VydmljZXMtaW50IWIzNzE1LmFtIiwieHNfYXV0aG9yaXphdGlvbiIsImRtYy1pbnQhdDM3MTUucGtnIiwiZG1jLWludCF0MzcxNS5jbGFzc2lmaWNhdGlvbiIsImRtYy1pbnQhdDM3MTUucHJvZHVjdGlvbiIsImRtYy1pbnQhdDM3MTUuZWgiLCJkbWMtaW50IXQzNzE1LnJldCIsImRtYy1pbnQhdDM3MTUubW8iLCJvcGVuaWQiLCJkbWMtaW50IXQzNzE1LmtwaSIsImRtYy1pbnQhdDM3MTUucHViLmV4dCIsImRtYy1pbnQhdDM3MTUucHJvZHVjdCIsImRtYy1pbnQhdDM3MTUucmVwIiwiZG1jLWludCF0MzcxNS5laHQiLCJkbWMtaW50IXQzNzE1LmtwaS5jdXN0IiwiZG1jLWludCF0MzcxNS5hc2IucnB0Iiwic2ItZXhlY3V0aW9uLWRtYy1zYXAtaW50IXQzNzE1IiwiZG1jLWludCF0MzcxNS5ob2xkIiwiZG1jLWludCF0MzcxNS5zcGciLCJkbWMtaW50IXQzNzE1LnByaSIsImRtYy1pbnQhdDM3MTUuRmlBTCIsImRtYy1pbnQhdDM3MTUucHJpLmV4dCIsImRtYy1pbnQhdDM3MTUucHMiLCJkbWMtaW50IXQzNzE1Lm1vYiIsImRtYy1pbnQhdDM3MTUubW9hIiwiZG1jLWludCF0MzcxNS5BTEMiLCJkbWMtaW50IXQzNzE1LlBNVCIsImRtYy1pbnQhdDM3MTUuZGMiLCJkbWMtaW50IXQzNzE1LlBNIiwiZG1jLWludCF0MzcxNS5tb3QiLCJkbWMtaW50IXQzNzE1LnNwLmRtZSIsImRtYy1pbnQhdDM3MTUuYWN0IiwiZG1jLWludCF0MzcxNS5BRFMiLCJkbWMtaW50IXQzNzE1LmZscC5jIiwiZG1jLWludCF0MzcxNS5wYSIsImRtYy1pbnQhdDM3MTUucGgiLCJ1YWEiLCJkbWMtaW50IXQzNzE1LnBlIiwiZG1jLWludCF0MzcxNS5tb3UiLCJkbWMtaW50IXQzNzE1LmRlbWFuZCIsImRtYy1pbnQhdDM3MTUubW9wIiwiZG1jLWludCF0MzcxNS5jciIsInByb3Zpc2lvbmluZy1kbWMtc2FwLWludCF0MzcxNSIsImRtYy1pbnQhdDM3MTUuUE1BIiwiZG1jLWludCF0MzcxNS5vcmciLCJkbWMtaW50IXQzNzE1LmRwcCIsImRtYy1pbnQhdDM3MTUud3MiLCJkbWMtaW50IXQzNzE1LnByb2RzY2hlZCIsImRtYy1pbnQhdDM3MTUuZ2EiLCJkbWMtaW50IXQzNzE1LnNyIiwiZG1jLWludCF0MzcxNS5zcCIsImRtYy1pbnQhdDM3MTUucGxhbnQiLCJkbWMtaW50IXQzNzE1LndpIiwiZG1jLWludCF0MzcxNS5pbnQiLCJkbWMtaW50IXQzNzE1LmVzYyIsImRtYy1pbnQhdDM3MTUudHJndC5nbG9iYWwiLCJkbWMtaW50IXQzNzE1LlBNUiIsImRtYy1pbnQhdDM3MTUua2EiLCJkbWMtaW50IXQzNzE1LnRvcGljIiwiZG1jLWludCF0MzcxNS5pbmdlc3QiLCJkbWMtaW50IXQzNzE1LnBlcnMiLCJkbWMtaW50IXQzNzE1LmZpbGUiXX0.ULMT_ql-7UqJ6c65fF6SsTDqWmvOMb8JgWcg3Gk8_cg3040wJG-ZM1aaQWQ62WFigOMD4fqIftVyVFMajuPTOzDP1oBMs3FOkzQpKtiKK3h-WB_i4F865gwnH-3q0AuVCweUPgPKu-OasYIls5ZvJTKPq6ZeGT7jSw8J_hxUSr91RGvnmI2PYaFLhJHWmnkw7jWAubWw2GlrX7qXtweIU9sGGruh2XGB7RKzBf8Amp3C9e6nunOgibEW5k6FgObHQuwROZENoX1Yk9cG9i-DYYik58o3UJZ2DFEE-rdl2buGzE4qDlAD2gawd7d2O011reXABR92Tfh2On1FC7EHOA'
-    c = {'Content-Type': 'application/json', 'Accept': '*/*'}
-    d = {'key':"REG_f5d2be73-99fa-4b27-bd13-0e698f4b91b9_1", 'version':"49"}
-    a = apiAuto('https://dm-canary-int-fnd-processengine.cfapps.sap.hana.ondemand.com/api/v1/process/debugger/start',acctoken)
-    res = a.runAPI(method='post',headers = c, param = d)
-    
-    return HttpResponse(res.text)
+    w =webOpt(r'statics/tools/chromedriver',30)
+    acctoken=w.getAccToken('https://dmcazsysinthc1-dm-internal-azure-az-sysint-execution.cfapps.eu20.hana.ondemand.com','pe.tester1@sap.com','Sap1234567','dm-preprod.accounts400.ondemand.com','https://dmcazsysinthc1-dm-internal-azure-az-sysint-execution.cfapps.eu20.hana.ondemand.com/jwt')  
+    a=apiAuto('https://dm-internal-azure-az-sysint-fnd-processengine.cfapps.eu20.hana.ondemand.com/api/v1/process/processDefinitions/start',acctoken)
+    param= {'key':'REG_12c8292d-3943-48d5-b892-d156c32aac01_4','version':1,'async':'false','logLevel':'DEBUG'}
+    b = '{"input1":[{      "lang":"zh",     "value":"vau",     "integerValue": 0,     "numValue": 10 },{      "lang":"zh",     "value":"vau",     "integerValue": 1,     "numValue": 10 } ],"input2":"[1,2,3,4.5]","passUserId":true}'
+    res=a.runAPI(method="post",param=param,body=b)
+    context = {}
+    context['test'] = res.text
+    return render(request,'ApiAuto/ApiAuto.html',context)
+
+def runApiAutoTest2(request,sceId):
+    context = {}
+    w =webOpt(r'statics/tools/chromedriver',30)
+    acctoken=w.getAccToken('https://dmcazsysinthc1-dm-internal-azure-az-sysint-execution.cfapps.eu20.hana.ondemand.com','pe.tester1@sap.com','Sap1234567','dm-preprod.accounts400.ondemand.com','https://dmcazsysinthc1-dm-internal-azure-az-sysint-execution.cfapps.eu20.hana.ondemand.com/jwt')   
+    #1. input/expectResult/parameters/method
+    inputs=models.ApiAutoCode.objects.filter(sautoId=sceId).get('ApiInput')
+    expectResult=models.ApiAutoCode.objects.filter(sautoId=sceId).get('expectResult')
+    params=models.ApiAutoCode.objects.filter(sautoId=sceId).get('ApiParam')
+    method=models.ApiAutoCode.objects.filter(sautoId=sceId).get('ApiMethod')
+    #2. allapi
+    a=apiAuto('https://dm-internal-azure-az-sysint-fnd-processengine.cfapps.eu20.hana.ondemand.com/api/v1/process/processDefinitions/start',acctoken)
+    res=a.runAPI(method=method,param=params,body=inputs)
+    #4. verify result
+    result=a.verifyResult(res,expectResult)
+    context['test']=result
+    return render(request,'ApiAuto/ApiAuto.html',context)
 
 class apiAuto():
     def __init__(self,url,accToken):
         self.url = url
         self.accToken = accToken
 
-    def runAPI(self, method = 'get', **kv):
+    def runAPI(self, method, **kv):
         """
         run api to get data.
         """
         header = {}
         header['Authorization'] = "Bearer "+ self.accToken
+        header['Content-Type']= "application/json"
         param = {}
         data = {}
 
         if "headers" in kv.keys():  
             header = dict(header, **kv['headers']) 
         if "param" in kv.keys():
-            param = dict(header, **kv['param']) 
+            param = dict(param, **kv['param']) 
         if "body" in kv.keys():
-            data = kv['body'] 
+            data = kv['body']
         
         if method == 'get':
             response = requests.get(self.url, headers=header, params=param)
@@ -49,6 +71,23 @@ class apiAuto():
         else:
             response = "method not implemented yet!"
         return response
+
+    def verifyResult(self, response, **expectedResult):
+        """
+        docstring
+        """
+        apiResult=response.text
+        outputs={}
+        if "outputs" in expectedResult.keys():
+            outputs=expectedResult['outputs']
+            dict1 = json.load(apiResult)
+            dict2 = json.load(outputs)
+            result=cmp(dict1,dict2)
+        elif "statusCode" in expectedResult.keys():
+            statusCode=expectedResult['statusCode']
+            if statusCode==response.statusCode:
+                result=0
+        return result
          
     def __str__(self):
         "Process engine api automation test"
