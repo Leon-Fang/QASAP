@@ -3,6 +3,10 @@ from django.shortcuts import render,HttpResponse
 import requests
 from UiAuto.views import webOpt
 import json
+import pandas as pd
+import numpy as np
+import math
+from pyecharts.charts import Bar
 
 # Create your views here.
 
@@ -82,7 +86,7 @@ class apiAuto():
             outputs=expectedResult['outputs']
             dict1 = json.load(apiResult)
             dict2 = json.load(outputs)
-            result=cmp(dict1,dict2)
+            #result=cmp(dict1,dict2)
         elif "statusCode" in expectedResult.keys():
             statusCode=expectedResult['statusCode']
             if statusCode==response.statusCode:
@@ -91,3 +95,82 @@ class apiAuto():
          
     def __str__(self):
         "Process engine api automation test"
+
+
+class analysisPerformanceResult(apiAuto):
+    def __init__(self,url,token,insCSVFile,stepCSVFile):
+        super.__init__(analysisPerformanceResult,self).__init__(url,token)
+        '''
+        get csv fiel via api
+        '''
+        df = pd.read_csv(insCSVFile)
+        pi=df[df['InstanceName'].str.contains('run5SerialMockService',regex=False)]
+        self.insDF=pi
+        self.stepDF=pd.read_csv(stepCSVFile)
+    
+    def getTPS(self):
+        """
+        caculate tps.
+        """
+        df = self.insDF
+        st = pd.to_datetime(df['StartTime'])
+        et = pd.to_datetime(df['EndTime'])
+        tps=df.shape[0]/(et.max()-st.min()).total_seconds()
+        return tps
+    
+    def getResTime(self):
+        """
+        caculate response time.
+        return like: 
+        {
+            'count': 100.0,
+            'mean': 4759.06,
+            'std': 854.870547468617,
+            'min': 3981.0,
+            '50%': 4482.5,
+            '90%': 5765.0,
+            '95%': 990029,
+            '99%': 6703.510000000016,
+            '99.9%': 9421.951000000032,
+            'max': 9724.0
+        }
+        """
+        df = self.insDF
+        d=df['Duration'].sort_values().reset_index(drop = True)
+        dic = dict(d.describe(percentiles=[.9,.95,.99,.999]))
+        fifty=self.getPercentileValue(d,0.5)
+        ninety=self.getPercentileValue(d,0.9)
+        ninety5=self.getPercentileValue(d,0.95)
+        ninety9=self.getPercentileValue(d,0.99)
+        ninety99=self.getPercentileValue(d,0.999)
+        dic['50%']=fifty
+        dic['90%']=ninety
+        dic['95%']=ninety5
+        dic['99%']=ninety9
+        dic['99.9%']=ninety99
+        return dic
+    
+    def getPercentileValue(self,serieS,percentileV):
+        '''
+        return the value at the percentileV position.
+        '''
+        cnt=serieS.count()
+        num=math.floor(cnt*percentileV)-1
+        dvalue=serieS[num]
+        return dvalue
+
+    def getFailRate(self):
+        '''
+        return like: {'COMPLETED': 100, 'TERMINATED': 1, 'FAILED': 1} 
+        '''
+        df = self.insDF
+        statusDic =dict(df['Status'].value_counts())
+        return statusDic
+
+    def getFailedInsName(self):
+        '''
+        return pd.series like: 100 sdferfddfdf
+        '''
+        df = self.insDF
+        failInsName = df[df['Status'].str.contains('FAILED')]['InstanceName']
+        return failInsName

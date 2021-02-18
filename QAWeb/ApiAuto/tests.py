@@ -16,3 +16,6 @@ c = (
     )
     .render("bar_base_dict_config.html")
 )
+
+if __name__ == "__main__":
+    print("itself run!")
